@@ -1,14 +1,19 @@
 package model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "ingrediente")
 public class Ingrediente {
 	@Id
 	@GeneratedValue
 	private int id;
+
+	@Column(name = "nome")
 	private String name;
 
 	public int getId() {
