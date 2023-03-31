@@ -1,8 +1,8 @@
 package dao;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
@@ -40,7 +40,7 @@ public class ImpastoDao {
 
 		Query query = entityManager.createQuery("SELECT e FROM Impasto e");
 
-		ArrayList<Impasto> listaImpasti = (ArrayList<Impasto>) query.getResultList();
+		List<Impasto> listaImpasti = (List<Impasto>) query.getResultList();
 
 		for (Impasto impasto : listaImpasti) {
 			tipiImpasti.put(impasto.getId(), impasto.getName());

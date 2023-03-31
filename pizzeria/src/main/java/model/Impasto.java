@@ -1,9 +1,12 @@
 package model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -16,6 +19,9 @@ public class Impasto {
 	@Column(name = "nome")
 	private String name;
 
+	@OneToMany(mappedBy = "impasto")
+	private List<Pizza> pizze;
+
 	public int getId() {
 		return id;
 	}
@@ -26,6 +32,14 @@ public class Impasto {
 
 	public String getName() {
 		return name;
+	}
+
+	public List<Pizza> getPizze() {
+		return pizze;
+	}
+
+	public void setPizze(List<Pizza> pizze) {
+		this.pizze = pizze;
 	}
 
 	public void setName(String name) {

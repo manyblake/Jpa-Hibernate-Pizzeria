@@ -1,32 +1,28 @@
 package dao;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import db.ConnectionManager;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
 import model.Utente;
+import util.JPAUtil;
 
 public class UtenteDao {
 
 	public Utente findUser(String user, String password) throws SQLException {
-		Utente utente = null;
 
-		Connection dbConnection = ConnectionManager.getConnection();
-		java.sql.PreparedStatement cmd = null;
-		String sql = "SELECT * FROM utente WHERE username = ? AND pwd = ? ";
-		
-		cmd = dbConnection.prepareStatement(sql);
-		cmd.setString(1, user);
-		cmd.setString(2, password);
-		ResultSet res = cmd.executeQuery();
+		EntityManager entityManager = JPAUtil.getEntityManagerFactory().createEntityManager();
+		entityManager.getTransaction().begin();
 
-		if (res.next()) {
-			utente = new Utente(res.getInt("id"), res.getString("nome"), res.getString("username"),
-					res.getString("pwd"));
-		}
-		
-		dbConnection.close();
+		Query query = entityManager.createQuery("SELECT u FROM Utente u WHERE username = :user AND pwd = :pwd");
+		query.setParameter("user", user);
+		query.setParameter("pwd", password);
+
+		entityManager.getTransaction().commit();
+		Utente utente = (Utente) query.getSingleResult();
+
+		entityManager.close();
 
 		return utente;
 	}

@@ -1,20 +1,41 @@
 package model;
 
+import java.util.List;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Utente {
 	@Id
 	@GeneratedValue
 	private int id;
+	
+	@Column(name = "nome")
 	private String name;
+	
+	@Column(name = "username")
 	private String user;
+	
+	@Column(name = "pwd")
 	private String password;
+
+	@OneToMany(mappedBy = "utente")
+	private List<Pizza> pizze;
 
 	public int getId() {
 		return id;
+	}
+
+	public List<Pizza> getPizze() {
+		return pizze;
+	}
+
+	public void setPizze(List<Pizza> pizze) {
+		this.pizze = pizze;
 	}
 
 	public void setId(int id) {
@@ -51,6 +72,9 @@ public class Utente {
 		this.name = name;
 		this.user = user;
 		this.password = password;
+	}
+
+	public Utente() {
 	}
 
 	@Override
