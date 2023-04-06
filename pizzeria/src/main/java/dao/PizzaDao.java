@@ -14,26 +14,17 @@ import model.Pizza;
 import util.JPAUtil;
 
 public class PizzaDao {
-	public static Map<Pizza, List<Integer>> getPizzePerUtente(String userId) throws SQLException {
+	public static List<Pizza> getPizzePerUtente(Integer userId) throws SQLException {
 		EntityManager entityManager = JPAUtil.getEntityManagerFactory().createEntityManager();
 		entityManager.getTransaction().begin();
 
-		Map<Pizza, List<Integer>> pizzePerUtente = new HashMap<Pizza, List<Integer>>();
+		List<Pizza> pizzePerUtente = new ArrayList<Pizza>();
 
 		TypedQuery<Pizza> query = entityManager.createQuery("SELECT p FROM Pizza p WHERE utente_id = :userId",
 				Pizza.class);
 		query.setParameter("userId", userId);
 
-		List<Pizza> listaPizze = query.getResultList();
-
-		for (Pizza p : listaPizze) {
-			ArrayList<Integer> listaCodiciIngredienti = new ArrayList<Integer>();
-
-			for (Ingrediente i : p.getIngredienti()) {
-				listaCodiciIngredienti.add(i.getId());
-			}
-			pizzePerUtente.put(p, listaCodiciIngredienti);
-		}
+		pizzePerUtente = query.getResultList();
 
 		entityManager.getTransaction().commit();
 

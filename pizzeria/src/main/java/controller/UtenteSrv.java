@@ -63,9 +63,8 @@ public class UtenteSrv extends HttpServlet {
 				if (utente != null) {
 					Map<Integer, String> tipiImpasti = impastoDao.getImpasti();
 					Map<Integer, String> ingredienti = ingredienteDao.getIngredienti();
-					Integer id = utente.getId();
-					String idString = id.toString();
-					Map<Pizza, List<Integer>> pizze = pizzaDao.getPizzePerUtente(idString);
+					List<Pizza> pizze;
+					pizze = utente.getPizze();
 
 					request.getSession().setAttribute("utente", utente);
 					request.getSession().setAttribute("listaImpasti", tipiImpasti);

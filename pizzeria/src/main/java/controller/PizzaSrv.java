@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.PizzaDao;
+import dao.UtenteDao;
 import model.Impasto;
 import model.Ingrediente;
 import model.Pizza;
@@ -89,18 +90,13 @@ public class PizzaSrv extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			List<Pizza> pizze;
 
-			Map<Pizza, List<Integer>> pizze;
-			try {
-				Integer id = utente.getId();
-				String idString = id.toString();
-				pizze = pizzaDao.getPizzePerUtente(idString);
-				request.getSession().setAttribute("listaPizze", pizze);
-				request.getRequestDispatcher("/dashboard.jsp").forward(request, response);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			//				pizze = pizzaDao.getPizzePerUtente(Utente.getId());
+							pizze = utente.getPizze();
+							request.getSession().setAttribute("listaPizze", pizze);
+							request.getRequestDispatcher("/dashboard.jsp").forward(request, response);
 		}
 
 		else if (cancellaPizze != null && cancellaPizze.equals("cancella")) {
@@ -116,17 +112,10 @@ public class PizzaSrv extends HttpServlet {
 				e.printStackTrace();
 			}
 			Utente utente = (Utente) request.getSession().getAttribute("utente");
-			Map<Pizza, List<Integer>> pizze;
-			try {
-				Integer id = utente.getId();
-				String idString = id.toString();
-				pizze = pizzaDao.getPizzePerUtente(idString);
-				request.getSession().setAttribute("listaPizze", pizze);
-				request.getRequestDispatcher("/dashboard.jsp").forward(request, response);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			List<Pizza> pizze;
+			pizze = utente.getPizze();
+			request.getSession().setAttribute("listaPizze", pizze);
+			request.getRequestDispatcher("/dashboard.jsp").forward(request, response);
 
 		}
 
