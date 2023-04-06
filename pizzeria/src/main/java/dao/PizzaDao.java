@@ -3,27 +3,28 @@ package dao;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import model.Ingrediente;
 import model.Pizza;
-import model.Utente;
 import util.JPAUtil;
 
 public class PizzaDao {
-	public Map<Pizza, ArrayList<Integer>> getPizzePerUtente(Utente utente) throws SQLException {
+	public static Map<Pizza, List<Integer>> getPizzePerUtente(String userId) throws SQLException {
 		EntityManager entityManager = JPAUtil.getEntityManagerFactory().createEntityManager();
 		entityManager.getTransaction().begin();
 
-		Map<Pizza, ArrayList<Integer>> pizzePerUtente = new HashMap<Pizza, ArrayList<Integer>>();
+		Map<Pizza, List<Integer>> pizzePerUtente = new HashMap<Pizza, List<Integer>>();
 
-		Query query = entityManager.createQuery("SELECT p FROM Pizza p WHERE utente_id = :userId");
-		query.setParameter("userId", utente.getId());
+		TypedQuery<Pizza> query = entityManager.createQuery("SELECT p FROM Pizza p WHERE utente_id = :userId",
+				Pizza.class);
+		query.setParameter("userId", userId);
 
-		ArrayList<Pizza> listaPizze = (ArrayList<Pizza>) query.getResultList();
+		List<Pizza> listaPizze = query.getResultList();
 
 		for (Pizza p : listaPizze) {
 			ArrayList<Integer> listaCodiciIngredienti = new ArrayList<Integer>();
@@ -42,7 +43,7 @@ public class PizzaDao {
 
 	}
 
-	public void create(Pizza pizza) throws SQLException {
+	public static void create(Pizza pizza) throws SQLException {
 
 		EntityManager entityManager = JPAUtil.getEntityManagerFactory().createEntityManager();
 		entityManager.getTransaction().begin();
@@ -52,7 +53,7 @@ public class PizzaDao {
 		entityManager.getTransaction().commit();
 	}
 
-	public void delete(String[] pizzeDaCancellare) throws SQLException {
+	public static void delete(String[] pizzeDaCancellare) throws SQLException {
 		EntityManager entityManager = JPAUtil.getEntityManagerFactory().createEntityManager();
 		entityManager.getTransaction().begin();
 

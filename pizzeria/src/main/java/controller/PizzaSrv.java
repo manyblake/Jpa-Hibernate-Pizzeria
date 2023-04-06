@@ -90,9 +90,11 @@ public class PizzaSrv extends HttpServlet {
 				e.printStackTrace();
 			}
 
-			Map<Pizza, ArrayList<Integer>> pizze;
+			Map<Pizza, List<Integer>> pizze;
 			try {
-				pizze = pizzaDao.getPizzePerUtente(utente);
+				Integer id = utente.getId();
+				String idString = id.toString();
+				pizze = pizzaDao.getPizzePerUtente(idString);
 				request.getSession().setAttribute("listaPizze", pizze);
 				request.getRequestDispatcher("/dashboard.jsp").forward(request, response);
 			} catch (SQLException e) {
@@ -114,9 +116,11 @@ public class PizzaSrv extends HttpServlet {
 				e.printStackTrace();
 			}
 			Utente utente = (Utente) request.getSession().getAttribute("utente");
-			Map<Pizza, ArrayList<Integer>> pizze;
+			Map<Pizza, List<Integer>> pizze;
 			try {
-				pizze = pizzaDao.getPizzePerUtente(utente);
+				Integer id = utente.getId();
+				String idString = id.toString();
+				pizze = pizzaDao.getPizzePerUtente(idString);
 				request.getSession().setAttribute("listaPizze", pizze);
 				request.getRequestDispatcher("/dashboard.jsp").forward(request, response);
 			} catch (SQLException e) {

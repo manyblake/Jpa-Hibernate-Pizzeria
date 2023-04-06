@@ -1,20 +1,15 @@
 package controller;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 
 import dao.ImpastoDao;
 import dao.IngredienteDao;
@@ -68,7 +63,9 @@ public class UtenteSrv extends HttpServlet {
 				if (utente != null) {
 					Map<Integer, String> tipiImpasti = impastoDao.getImpasti();
 					Map<Integer, String> ingredienti = ingredienteDao.getIngredienti();
-					Map<Pizza, ArrayList<Integer>> pizze = pizzaDao.getPizzePerUtente(utente);
+					Integer id = utente.getId();
+					String idString = id.toString();
+					Map<Pizza, List<Integer>> pizze = pizzaDao.getPizzePerUtente(idString);
 
 					request.getSession().setAttribute("utente", utente);
 					request.getSession().setAttribute("listaImpasti", tipiImpasti);
