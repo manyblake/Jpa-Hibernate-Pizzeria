@@ -1,50 +1,26 @@
 package dao;
 
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import model.Impasto;
 import util.JPAUtil;
 
 public class ImpastoDao {
 
-//	public Map<Integer, String> getImpasti() throws SQLException {
-//		Connection dbConnection = ConnectionManager.getConnection();
-//		PreparedStatement cmd = null;
-//		Map<Integer, String> tipiImpasti = new HashMap<Integer, String>();
-//
-//		String sql = "SELECT * FROM impasto";
-//		cmd = dbConnection.prepareStatement(sql);
-//		ResultSet res = cmd.executeQuery();
-//
-//		while (res.next()) {
-//			tipiImpasti.put(res.getInt("id"), res.getString("nome"));
-//		}
-//
-//		dbConnection.close();
-//
-//		return tipiImpasti;
-//
-//	}
-
-	public Map<Integer, String> getImpasti() throws SQLException {
-		Map<Integer, String> tipiImpasti = new HashMap<Integer, String>();
+	public List<Impasto> getImpasti() throws SQLException {
+		List<Impasto> tipiImpasti = new ArrayList<Impasto>();
 
 		EntityManager entityManager = JPAUtil.getEntityManagerFactory().createEntityManager();
 		entityManager.getTransaction().begin();
 
-		Query query = entityManager.createQuery("SELECT e FROM Impasto e");
+		TypedQuery<Impasto> query = entityManager.createQuery("SELECT e FROM Impasto e", Impasto.class);
 
-		List<Impasto> listaImpasti = (List<Impasto>) query.getResultList();
-
-		for (Impasto impasto : listaImpasti) {
-			tipiImpasti.put(impasto.getId(), impasto.getName());
-		}
+		tipiImpasti = (List<Impasto>) query.getResultList();
 
 		entityManager.getTransaction().commit();
 

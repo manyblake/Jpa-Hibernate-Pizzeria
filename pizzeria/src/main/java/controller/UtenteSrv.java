@@ -15,6 +15,7 @@ import dao.ImpastoDao;
 import dao.IngredienteDao;
 import dao.PizzaDao;
 import dao.UtenteDao;
+import model.Impasto;
 import model.Pizza;
 import model.Utente;
 
@@ -61,7 +62,7 @@ public class UtenteSrv extends HttpServlet {
 				Utente utente = uD.findUser(user, pswd);
 
 				if (utente != null) {
-					Map<Integer, String> tipiImpasti = impastoDao.getImpasti();
+					List<Impasto> tipiImpasti = impastoDao.getImpasti();
 					Map<Integer, String> ingredienti = ingredienteDao.getIngredienti();
 					List<Pizza> pizze;
 					pizze = utente.getPizze();

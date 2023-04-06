@@ -16,67 +16,63 @@
 	<h2>Crea la tua pizza</h2>
 
 	<%
-	// 	Map<Integer, String> tipiImpasti = (Map<Integer, String>) session.getAttribute("listaImpasti");
-	// 	Map<Integer, String> ingredienti = (Map<Integer, String>) session.getAttribute("listaIngredienti");
-	// 	Map<Pizza, ArrayList<Integer>> pizze = (Map<Pizza, ArrayList<Integer>>) session.getAttribute("listaPizze");
-	// 	/*  List<Pizza> listaPizze = (Map<Pizza, ArrayList<Integer>>) session.getAttribute("listaPizze");
+	List<Impasto> tipiImpasti = (List<Impasto>) session.getAttribute("listaImpasti");
+	Map<Integer, String> ingredientiLista = (Map<Integer, String>) session.getAttribute("listaIngredienti");
 	List<Pizza> pizze = (List<Pizza>) session.getAttribute("listaPizze");
 	%>
 
-	<!-- 	<form method="post" action="PizzaSrv"> -->
-	<!-- 		<input type="hidden" id="idUtente" name="idUtente" -->
-	<%-- 			value="${utente.id}"> <input type="hidden" id="creaPizza" --%>
-	<!-- 			name="creaPizza" value="crea"> <label for="nome_pizza">Dai -->
-	<!-- 			un nome alla tua pizza</label><br> <input id="nome_pizza" -->
-	<!-- 			name="nome_pizza" type="text"> <br> -->
-	<!-- 		<table> -->
-	<!-- 			<tr> -->
-	<!-- 				<th>Impasti</th> -->
-	<!-- 				<th>Ingredienti</th> -->
-	<!-- 			</tr> -->
-	<!-- 			<tr> -->
-	<!-- 				<td> -->
-	<!-- 					<table> -->
-
-	<%-- 						<% --%>
-	// for (Integer key : tipiImpasti.keySet()) {
-	<%-- 						%> --%>
-	<!-- 						<tr> -->
-	<%-- 							<td><input type="radio" id="<%out.print(key);%>" --%>
-	<%-- 								name="impasti" value="<%out.print(key);%>">   <label --%>
-	<%-- 								for="<%out.print(key);%>"> --%>
-	<%-- 									<% --%>
-	// out.print(tipiImpasti.get(key));
-	<%-- 									%> --%>
-	<!-- 							</label></td> -->
-	<!-- 						</tr> -->
-	<%-- 						<% --%>
-	// }
-	<%-- 						%> --%>
-	<!-- 					</table> -->
-	<!-- 				</td> -->
-	<!-- 				<td> -->
-	<!-- 					<table> -->
-	<%-- 						<% --%>
-	// for (Integer key : ingredienti.keySet()) {
-	<%-- 						%> --%>
-	<!-- 						<tr> -->
-	<%-- 							<td><label for="<%out.print(key);%>"> <input --%>
-	<%-- 									type="checkbox" name="ingredienti" id="<%out.print(key);%>" --%>
-	<%-- 									value="<%out.print(key);%>"> <% --%>
-	// out.print(ingredienti.get(key));
-	<%--  %> --%>
-	<!-- 							</label></td> -->
-	<!-- 						</tr> -->
-	<%-- 						<% --%>
-	// }
-	<%-- 						%> --%>
-	<!-- 					</table> -->
-	<!-- 				</td> -->
-	<!-- 			</tr> -->
-	<!-- 		</table> -->
-	<!-- 		<input type="submit"> <br> -->
-	<!-- 	</form> -->
+	<form method="post" action="PizzaSrv">
+		<input type="hidden" id="idUtente" name="idUtente"
+			value="${utente.id}"> <input type="hidden" id="creaPizza"
+			name="creaPizza" value="crea"> <label for="nome_pizza">
+			Dai un nome alla tua pizza </label><br> <input id="nome_pizza"
+			name="nome_pizza" type="text"> <br>
+		<table>
+			<tr>
+				<th>Impasti</th>
+				<th>Ingredienti</th>
+			</tr>
+			<tr>
+				<td>
+					<table>
+						<%
+						for (Impasto impasto : tipiImpasti) {
+						%>
+						<tr>
+							<td><input type="radio" id="<%out.print(impasto.getId());%>"
+								name="impasti" value="<%out.print(impasto.getId());%>"> <label
+								for="<%out.print(impasto.getId());%>"> <%
+ out.print(impasto.getName());
+ %>
+							</label></td>
+						</tr>
+						<%
+						}
+						%>
+					</table>
+				</td>
+				<td>
+					<table>
+						<%
+						for (Integer key : ingredientiLista.keySet()) {
+						%>
+						<tr>
+							<td><label for="<%out.print(key);%>"> <input
+									type="checkbox" name="ingredienti" id="<%out.print(key);%>"
+									value="<%out.print(key);%>"> <%
+ out.print(ingredientiLista.get(key));
+ %>
+							</label></td>
+						</tr>
+						<%
+						}
+						%>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<input type="submit"> <br>
+	</form>
 
 	<form method="post" action="PizzaSrv">
 		<input type="hidden" id="cancellaPizze" name="cancellaPizze"
