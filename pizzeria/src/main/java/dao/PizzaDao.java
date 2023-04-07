@@ -2,14 +2,11 @@ package dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import model.Ingrediente;
 import model.Pizza;
 import util.JPAUtil;
 
@@ -48,13 +45,16 @@ public class PizzaDao {
 		EntityManager entityManager = JPAUtil.getEntityManagerFactory().createEntityManager();
 		entityManager.getTransaction().begin();
 
-		for (int i = 0; i < pizzeDaCancellare.length; i++) {
+		if (pizzeDaCancellare.length != 0) {
+			for (int i = 0; i < pizzeDaCancellare.length; i++) {
 
-			Pizza pizza = entityManager.find(Pizza.class, Integer.parseInt(pizzeDaCancellare[i]));
-			entityManager.remove(pizza);
-			entityManager.getTransaction().commit();
+				Pizza pizza = entityManager.find(Pizza.class, Integer.parseInt(pizzeDaCancellare[i]));
+				entityManager.remove(pizza);
 
+			}
 		}
+
+		entityManager.getTransaction().commit();
 		entityManager.close();
 
 	}

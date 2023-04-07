@@ -3,7 +3,6 @@ package controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,9 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.ImpastoDao;
 import dao.IngredienteDao;
-import dao.PizzaDao;
 import dao.UtenteDao;
 import model.Impasto;
+import model.Ingrediente;
 import model.Pizza;
 import model.Utente;
 
@@ -55,7 +54,6 @@ public class UtenteSrv extends HttpServlet {
 			UtenteDao uD = new UtenteDao();
 			ImpastoDao impastoDao = new ImpastoDao();
 			IngredienteDao ingredienteDao = new IngredienteDao();
-			PizzaDao pizzaDao = new PizzaDao();
 			String user = request.getParameter("user");
 			String pswd = request.getParameter("pswd");
 			try {
@@ -63,7 +61,7 @@ public class UtenteSrv extends HttpServlet {
 
 				if (utente != null) {
 					List<Impasto> tipiImpasti = impastoDao.getImpasti();
-					Map<Integer, String> ingredienti = ingredienteDao.getIngredienti();
+					List<Ingrediente> ingredienti = ingredienteDao.getIngredienti();
 					List<Pizza> pizze;
 					pizze = utente.getPizze();
 

@@ -4,17 +4,15 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.PizzaDao;
-import dao.UtenteDao;
 import model.Impasto;
 import model.Ingrediente;
 import model.Pizza;
@@ -57,26 +55,24 @@ public class PizzaSrv extends HttpServlet {
 		String creaPizza = request.getParameter("creaPizza");
 		String cancellaPizze = request.getParameter("cancellaPizze");
 
+		Utente utente = (Utente) request.getSession().getAttribute("utente");
+		List<Pizza> pizze = new ArrayList<Pizza>();
+
 		if (creaPizza != null && creaPizza.equals("crea")) {
-			PizzaDao pizzaDao = new PizzaDao();
 			Pizza pizza = new Pizza();
 
 			String[] ingredienti = request.getParameterValues("ingredienti");
-
 			List<Ingrediente> listaIngredienti = new ArrayList<Ingrediente>();
-			
+
 			for (int i = 0; i < ingredienti.length; i++) {
-				Query query = entityManager.createQuery("SELECT i FROM Ingrediente i WHERE id = :id");
+				TypedQuery<Ingrediente> query = entityManager.createQuery("SELECT i FROM Ingrediente i WHERE id = :id",
+						Ingrediente.class);
 				query.setParameter("id", Integer.parseInt(ingredienti[i]));
 				listaIngredienti.add((Ingrediente) query.getSingleResult());
 			}
 
-
 			String nomePizza = request.getParameter("nome_pizza");
 			Integer impastoId = Integer.parseInt(request.getParameter("impasti"));
-			Integer utenteId = Integer.parseInt(request.getParameter("idUtente"));
-
-			Utente utente = entityManager.find(Utente.class, utenteId);
 			Impasto impasto = entityManager.find(Impasto.class, impastoId);
 
 			pizza.setNome(nomePizza);
@@ -85,39 +81,30 @@ public class PizzaSrv extends HttpServlet {
 			pizza.setIngredienti(listaIngredienti);
 
 			try {
-				pizzaDao.create(pizza);
+				PizzaDao.create(pizza);
+				pizze = PizzaDao.getPizzePerUtente(utente.getId());
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
-			List<Pizza> pizze;
-
-			//				pizze = pizzaDao.getPizzePerUtente(Utente.getId());
-							pizze = utente.getPizze();
-							request.getSession().setAttribute("listaPizze", pizze);
-							request.getRequestDispatcher("/dashboard.jsp").forward(request, response);
 		}
 
 		else if (cancellaPizze != null && cancellaPizze.equals("cancella")) {
-			PizzaDao pizzaDao = new PizzaDao();
 			String[] pizzeDaCancellare = request.getParameterValues("pizzeUtente");
+			
 
 			try {
-				if (pizzeDaCancellare.length != 0) {
-					pizzaDao.delete(pizzeDaCancellare);
-				}
+				PizzaDao.delete(pizzeDaCancellare);
+				pizze = PizzaDao.getPizzePerUtente(utente.getId());
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			Utente utente = (Utente) request.getSession().getAttribute("utente");
-			List<Pizza> pizze;
-			pizze = utente.getPizze();
+			
+		}
 			request.getSession().setAttribute("listaPizze", pizze);
 			request.getRequestDispatcher("/dashboard.jsp").forward(request, response);
-
-		}
 
 	}
 

@@ -22,7 +22,7 @@ public class PizzaService {
 	@GET
 	@Path("/{userId}")
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-	public Map<Pizza, List<Integer>> getPizzas_JSON(@PathParam("userId") String userId) {
+	public Map<Pizza, List<Integer>> getPizzas_JSON(@PathParam("userId") Integer userId) {
 		Map<Pizza, List<Integer>> listOfPizzas = null;
 		try {
 			listOfPizzas = PizzaDao.getPizzePerUtente(userId);
